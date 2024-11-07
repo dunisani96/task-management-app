@@ -1,0 +1,190 @@
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.min-h-full {
+  min-height: 100vh;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.sm\:mx-auto {
+  @media (min-width: 640px) {
+      margin-left: auto;
+      margin-right: auto;
+  }
+}
+
+.sm\:w-full {
+  @media (min-width: 640px) {
+      width: 100%;
+  }
+}
+
+.sm\:max-w-sm {
+  @media (min-width: 640px) {
+      max-width: 24rem;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+.space-y-6 {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5 * var(--tw-space-y-reverse));
+  margin-bottom: calc(0.5 * var(--tw-space-y-reverse));
+
+  & > :not([hidden]) ~ :not([hidden]) {
+      --tw-space-y-reverse: 1.5rem;
+      margin-top: calc(1.5rem + var(--tw-space-y-reverse));
+      margin-bottom: calc(1.5rem + var(--tw-space-y-reverse));
+  }
+}
+
+.block {
+  display: block;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.border-0 {
+  border-width: 0;
+  border-style: solid;
+}
+
+
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.ring-1 {
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgba(161, 161, 161, 0.5);
+  --tw-ring-offset-shadow: var(--tw-ring-offset-width) var(--tw-ring-offset-width) 0 var(--tw-ring-offset-color);
+  --tw-ring-shadow: 0 0 #0000, var(--tw-ring-offset-shadow), 0 0 0 1px var(--tw-ring-color);
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.ring-inset {
+  --tw-ring-inset: inset;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) var(--tw-ring-offset-width) var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 #0000, var(--tw-ring-offset-shadow), var(--tw-ring-inset) 0 0 0 1px var(--tw-ring-color);
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.bg-indigo-600 {
+  background-color: #4b5563;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+
+
+.text-white {
+  color: #fff;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.hover\:bg-indigo-500 {
+  @media (hover: hover) {
+      &:hover {
+          background-color: #586572;
+      }
+  }
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-indigo-600 {
+  color: #4b5563;
+}
+
+.hover\:text-indigo-500 {
+  @media (hover: hover) {
+      &:hover {
+          color: #586572;
+      }
+  }
+}
+
+.py-1{
+  padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+}
