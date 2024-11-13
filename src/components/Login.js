@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "../styles/Login.css";
-import "../index.css"
-import myImage from "../logo.svg"
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/Auth.css";
+import "../index.css";
+import myImage from "../logo.svg";
 
 const Login = () => {
   // State for managing input values
@@ -11,48 +11,32 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // useNavigate hook to navigate programmatically
+  // useHistory hook to navigate programmatically
   const history = useNavigate();
- 
 
   // Handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      // Send the login request to the backend
-      const response = await axios.post(
-        "http://localhost/task_management_backend/api/users/login.php",
-        {
-          email,
-          password,
-        }
-      );
-
-      if (response.data.success) {
-        // Store the token or session data in local storage or cookies
-        localStorage.setItem("token", response.data.token);
-
-        // Redirect to the dashboard
+    const response = await axios.post(
+      "http://localhost/task_management_backend/api/users/login.php",
+      {email,password}
+    );
+    if(response.status===200){
+      const {data} =response;
+      if(data.success){
+        localStorage.setItem("token",data.token);
         history.push("/dashboard");
-      } else {
-        setError(response.data.message || "Login failed. Please try again.");
+      }else{
+        setError(data.message || "Login failed , Please try again..")
       }
-    } catch (error) {
-      setError("An error occurred. Please try again.");
+    }else{
+      setError("An error occured. Please try again..")
     }
-  };
-
-  return (
-    <>
-    {/*
-      This example requires updating your template:
-
-      ```
-      <html class="h-full bg-white">
-      <body class="h-full">
-      ```
-    */}
+ 
+};
+return (
+  <>
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
@@ -66,67 +50,57 @@ const Login = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action="#" method="POST" className="space-y-6">
+        <form onSubmit={handleLogin} method="POST" className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-              Email address
-            </label>
-            <div className="mt-2">
+            <div className="m-2 ">
               <input
+                placeholder="Email"
                 id="email"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="block w-full rounded-md border-0 py-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                className=" form-control"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                Password
-              </label>
-              <div className="text-sm">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-            <div className="mt-2">
+            <div className="m-2">
               <input
+                placeholder="Password"
                 id="password"
                 name="password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="current-password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+                className="form-control"
               />
             </div>
           </div>
 
-          <div>
+          <div className="m-2">
             <button
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="btn-primary flex w-full justify-center"
             >
               Sign in
             </button>
           </div>
+          {error && <p className="text-danger">{error}</p>}
         </form>
 
-        <p className="mt-10 text-center text-sm/6 text-gray-500">
-          Not a member?{' '}
-          <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-            Start a 14 day free trial
-          </a>
-        </p>
+        <div className="register-link">
+          <p>
+            Don't have an account? <Link to="/register">Register here</Link>
+          </p>
+        </div>
       </div>
     </div>
-  </>
-
-  );
-};
+  </>);
+}
 
 export default Login;
