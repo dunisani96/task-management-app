@@ -1,106 +1,108 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import "../styles/Auth.css";
-import "../index.css";
-import myImage from "../logo.svg";
+import "../styles/Login.css"; // Import CSS file
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // State for managing input values
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
+  const navigate = useNavigate();
 
-  // useHistory hook to navigate programmatically
-  const history = useNavigate();
+  // Validate form by checking if both email and password are filled
+  const validateForm = () => {
+    setIsFormValid(email.trim() !== "" && password.trim() !== "");
+  };
 
-  // Handle form submission
-  const handleLogin = async (e) => {
+  // Update state when input changes and validate form
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "email") {
+      setEmail(value);
+    } else if (id === "password") {
+      setPassword(value);
+    }
+
+    validateForm(); // Validate the form on each input change
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await axios.post(
-      "http://localhost/task_management_backend/api/users/login.php",
-      {email,password}
-    );
-    if(response.status===200){
-      const {data} =response;
-      if(data.success){
-        localStorage.setItem("token",data.token);
-        history.push("/dashboard");
-      }else{
-        setError(data.message || "Login failed , Please try again..")
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/login",
+        { email, password },
+        { withCredentials: true } // This ensures cookies are sent and stored properly
+      );
+
+      if (response.data.success) {
+        // Save user data in localStorage
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        console.log("Login successful:", response.data.success);
+        console.log("User role:", response.data.user.role);
+
+        // Redirect to dashboard after successful login
+        navigate("/dashboard");
+      } else {
+        setErrorMessage(response.data.message || "Login failed.");
       }
-    }else{
-      setError("An error occured. Please try again..")
+    } catch (error) {
+      console.error("Login failed", error);
+      setErrorMessage("An error occurred during login.");
     }
- 
-};
-return (
-  <>
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          alt="Your Company"
-          src={myImage}
-          className="mx-auto h-10 w-auto"
-        />
-        <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
+  };
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={handleLogin} method="POST" className="space-y-6">
-          <div>
-            <div className="m-2 ">
-              <input
-                placeholder="Email"
-                id="email"
-                name="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-                className=" form-control"
-              />
-            </div>
-          </div>
+  // Run validation on email/password change
+  useEffect(() => {
+    validateForm();
+  }, [email, password]);
 
-          <div>
-            <div className="m-2">
-              <input
-                placeholder="Password"
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="form-control"
-              />
-            </div>
-          </div>
+  return (
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
 
-          <div className="m-2">
-            <button
-              type="submit"
-              className="btn-primary flex w-full justify-center"
-            >
-              Sign in
-            </button>
-          </div>
-          {error && <p className="text-danger">{error}</p>}
-        </form>
+        {errorMessage && <p className="error">{errorMessage}</p>}
 
-        <div className="register-link">
-          <p>
-            Don't have an account? <Link to="/register">Register here</Link>
-          </p>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            id="email"
+            value={email}
+            onChange={handleInputChange}
+            required
+          />
         </div>
-      </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="login-btn"
+          disabled={!isFormValid} // Disable if the form is not valid
+        >
+          Login
+        </button>
+
+        <p>
+          Don't have an account? <a href="/register">Register here</a>
+        </p>
+      </form>
     </div>
-  </>);
-}
+  );
+};
 
 export default Login;

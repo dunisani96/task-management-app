@@ -1,112 +1,163 @@
-import { useState } from "react";
-import "../styles/Auth.css";
+import React, { useState } from "react";
 import axios from "axios";
+import '../styles/Register.css'; // Import CSS for the register form
 import { useNavigate } from "react-router-dom";
 
-
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [error, setError] = useState();
+  const [formData, setFormData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    occupation: "",
+    role: "", 
+    password: ""
+  });
 
-const history= useNavigate();
-  const handleSignUp= async (e)=>{
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate= useNavigate();
+
+  // Validate the form to ensure all fields are filled
+  const validateForm = () => {
+    const { firstname, lastname, email, phone, occupation, role, password } = formData;
+    if (firstname && lastname && email && phone && occupation && role && password) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  };
+
+  // Handle input changes and validate form
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+    validateForm();
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response= await axios.post( 
-        "http://localhost/task_management_backend/api/users/register.php",
-        {firstName,lastName,email,password}
-    )
 
-    if(response===200){
-        const {data}= response;
-        if(data.success){
-            console.log("User created");
-            history.push("/login")
-        }else{
-            setError(data.message || "Login failed , please try again..")
-        }
-    }else{
-        setError("An error occured , please try again..")
+    try {
+      // Make the API request to register a new user (adjust the URL as needed)
+      const response = await axios.post("http://localhost:8000/api/users", formData);
+
+      if (response.data.success) {
+        console.log("Registration successful");
+        // You can redirect to login or perform other actions on success
+        navigate("/login");
+      } else {
+        setErrorMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error("Registration failed", error);
+      setErrorMessage("An error occurred during registration.");
     }
-
-
-  }
+  };
 
   return (
-    <>
-      <h1>Register User</h1>
+    <div className="register-container">
+      <form className="register-form" onSubmit={handleSubmit}>
+        <h2>Register</h2>
 
-      <div>
-        <form onSubmit={handleSignUp}>
-          <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="First name"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            ></input>
-          </div>
-          <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="Last Name"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            ></input>
-          </div>
-          <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
-          {/* <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="Role"
-              type="text"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            ></input>
-          </div> */}
-          {/* <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="Organisation"
-              type="text"
-              value={organisation}
-              onChange={(e) => setOrganisation(e.target.value)}
-            ></input>
-          </div> */}
-          <div className="m-2">
-            <input
-              className="form-control"
-              placeholder="Password"
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          </div>
+        {errorMessage && <p className="error">{errorMessage}</p>}
 
-          <div>
-            <button type="submit" className="btn-primary flex w-full justify-center">Submit</button>
-          </div>
-          {error && <p className="text-danger">{error}</p>}
+        <div className="form-group">
+          <label htmlFor="firstname">First Name</label>
+          <input
+            type="text"
+            id="firstname"
+            value={formData.firstname}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-        </form>
+        <div className="form-group">
+          <label htmlFor="lastname">Last Name</label>
+          <input
+            type="text"
+            id="lastname"
+            value={formData.lastname}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
-      </div>
-    </>
+        <div className="form-group">
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="occupation">Occupation</label>
+          <input
+            type="text"
+            id="occupation"
+            value={formData.occupation}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            value={formData.role}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        {/* Disable the button if the form is not valid */}
+        <button
+          type="submit"
+          className="register-btn"
+          disabled={!isFormValid}  // Disable if form is not valid
+        >
+          Register
+        </button>
+
+        <p>
+          Already have an account? <a href="/login">Login here</a>
+        </p>
+      </form>
+    </div>
   );
-
 };
 
 export default Register;

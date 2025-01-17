@@ -1,45 +1,150 @@
-.App {
-  text-align: center;
+/* General body styling */
+body {
+  font-family: Arial, sans-serif; /* Global font style */
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light gray background */
+  height: 100vh; /* Full height of the viewport */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Main container for the app */
+.container {
+  width: 100%;
+  max-width: 1140px; /* Similar to Bootstrap's container width for large screens */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Add some padding inside the container */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* For smaller screens, the container can be narrower for better spacing */
+@media (max-width: 1200px) {
+  .container {
+    padding: 15px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* General styling for app components (like Navbar, Dashboard, etc.) */
+.app-content {
+  background-color: white; /* Ensure content has a white background */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  padding: 20px; /* Padding inside the content area */
+  margin-top: 30px; /* Space from the top */
+}
+
+/* Navbar: Create a container for the navbar for full width */
+.navbar-container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 10px 20px; /* Padding for navbar */
+}
+
+/* Set the background color for the navbar */
+.navbar {
+  background-color: #007bff; /* Bootstrap blue */
+  color: white;
+  padding: 10px;
+}
+
+/* Ensure the navbar items align properly */
+.navbar ul {
+  display: flex;
+  justify-content: space-around; /* Spread out the items */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Style each link in the navbar */
+.navbar li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  transition: background-color 0.3s;
+}
+
+.navbar li a:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  border-radius: 5px;
+}
+
+/* Adjustments for small screens to make the navbar more mobile-friendly */
+@media (max-width: 768px) {
+  .navbar ul {
+    flex-direction: column;
+    align-items: flex-start; /* Stack navbar items vertically */
+  }
+
+  .navbar li a {
+    padding: 10px;
+    width: 100%; /* Make links full width */
+  }
+}
+
+/* Task columns inside Dashboard - make them responsive */
+.task-board {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Columns for tasks */
+.task-column {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-width: 250px; /* Minimum width for columns */
+  max-width: 32%; /* Max width for each column */
+}
+
+/* Responsive design: Stack columns vertically on small screens */
+@media (max-width: 768px) {
+  .task-board {
+    flex-direction: column;
+  }
+
+  .task-column {
+    max-width: 100%; /* Make columns take full width on small screens */
+  }
+}
+
+/* Form Styling */
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
   color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+button[type="submit"]:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* For smaller devices, reduce padding */
+@media (max-width: 768px) {
+  form {
+    padding: 15px;
   }
-  to {
-    transform: rotate(360deg);
+
+  button[type="submit"] {
+    width: 100%;
   }
-}
-body, html {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
